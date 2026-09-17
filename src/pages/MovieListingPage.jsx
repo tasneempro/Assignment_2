@@ -7,7 +7,6 @@ export default function MovieListingPage({ onSelectMovie }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch initial shows or search query results
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -20,13 +19,11 @@ export default function MovieListingPage({ onSelectMovie }) {
 
         const res = await fetch(url);
         if (!res.ok) throw new Error("Failed to fetch data.");
-        
+
         const data = await res.json();
-        
-        // TVMaze search endpoint wraps objects in { score, show }
-        const formattedData = query.trim() !== "" 
-          ? data.map((item) => item.show) 
-          : data.slice(0, 24); // Cap initial list to 24 for clean display
+        const formattedData = query.trim() !== ""
+          ? data.map((item) => item.show)
+          : data.slice(0, 24);
 
         setMovies(formattedData);
       } catch (err) {
@@ -36,7 +33,6 @@ export default function MovieListingPage({ onSelectMovie }) {
       }
     };
 
-    // Debounce search requests
     const timer = setTimeout(() => {
       fetchData();
     }, 400);
@@ -45,9 +41,8 @@ export default function MovieListingPage({ onSelectMovie }) {
   }, [query]);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 min-h-[80vh]">
-      {/* Search Bar Section */}
-      <div className="max-w-2xl mx-auto mb-10">
+    <div className="mx-auto min-h-[80vh] max-w-7xl px-6 py-8">
+      <div className="mx-auto mb-8 max-w-3xl">
         <div className="relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
           <input
@@ -55,30 +50,35 @@ export default function MovieListingPage({ onSelectMovie }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search for a movie or TV show..."
-            className="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-400 pl-11 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition shadow-inner"
+            className="w-full rounded-full border border-white/10 bg-white/5 py-3.5 pl-11 pr-4 text-white placeholder-slate-400 shadow-inner shadow-black/40 outline-none transition focus:border-red-500/60 focus:ring-2 focus:ring-red-500/20"
           />
         </div>
       </div>
 
-      {/* Dynamic Content Display */}
       {loading ? (
-        <div className="flex justify-center items-center py-20 text-slate-400 font-semibold">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mr-3"></div>
-          Loading shows...
+        <div className="flex items-center justify-center py-20 text-sm font-semibold text-slate-300">
+          <div className="mr-3 h-8 w-8 animate-spin rounded-full border-b-2 border-red-500"></div>
+          Loading titles...
         </div>
       ) : error ? (
-        <div className="text-center py-20 text-red-400 font-semibold">
+        <div className="py-20 text-center text-red-400 font-semibold">
           ⚠️ {error}
         </div>
       ) : movies.length === 0 ? (
-        <div className="text-center py-20 text-slate-400 font-semibold">
+        <div className="py-20 text-center text-slate-400 font-semibold">
           No titles found for "{query}". Try searching for something else!
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} onSelect={onSelectMovie} />
-          ))}
+        <div>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-black tracking-tight text-white">Trending now</h2>
+            <span className="text-sm font-medium text-slate-400">{movies.length} titles</span>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} onSelect={onSelectMovie} />
+            ))}
+          </div>
         </div>
       )}
     </div>

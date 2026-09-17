@@ -10,10 +10,10 @@ export default function App() {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-slate-900 text-slate-100">
-      <div>
+    <div className="min-h-screen flex flex-col justify-between bg-[#050505] text-white">
+      <div className="bg-[#050505]">
         <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        <main>
+        <main className="bg-[#050505]">
           {currentPage === "home" ? (
             <HomePage onExploreClick={() => setCurrentPage("movies")} />
           ) : (
@@ -24,7 +24,6 @@ export default function App() {
 
       <Footer />
 
-      {/* Modal Integration */}
       {selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
       )}

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 export default function MovieModal({ movie, onClose }) {
-  // 1. Call hooks at the top level before any early return
   useEffect(() => {
     if (!movie) return;
 
@@ -11,7 +10,6 @@ export default function MovieModal({ movie, onClose }) {
     };
   }, [movie]);
 
-  // 2. Early return after hooks
   if (!movie) return null;
 
   const { name, image, summary, rating, premiered, genres, status, language } = movie;
@@ -21,57 +19,51 @@ export default function MovieModal({ movie, onClose }) {
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm"
     >
       <div
-        onClick={(e) => e.stopPropagation()} // Prevent close on inner click
-        className="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200"
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-white/10 bg-[#111111] shadow-2xl shadow-black/60"
       >
-        {/* Top Header/Image Container */}
-        <div className="relative h-64 md:h-80 w-full bg-slate-950">
-          <img
-            src={backdrop}
-            alt={name}
-            className="w-full h-full object-cover opacity-80"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
-          
+        <div className="relative h-64 w-full bg-slate-950 md:h-80">
+          <img src={backdrop} alt={name} className="h-full w-full object-cover opacity-80" />
+          <div className="absolute inset-0 bg-linear-to-t from-[#111111] via-[#111111]/40 to-transparent"></div>
+
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white rounded-full p-2 border border-slate-700 transition"
+            className="absolute right-4 top-4 rounded-full border border-white/10 bg-black/50 p-2 text-sm text-white transition hover:bg-red-600"
             aria-label="Close"
           >
             ✕
           </button>
         </div>
 
-        {/* Modal Details Section */}
-        <div className="p-6 md:p-8 space-y-4 -mt-12 relative z-10">
+        <div className="relative z-10 -mt-12 space-y-4 p-6 md:p-8">
           <h2 className="text-3xl font-black text-white">{name}</h2>
-          
-          <div className="flex flex-wrap gap-4 text-sm font-semibold text-slate-300">
-            <span className="bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full">
+
+          <div className="flex flex-wrap gap-3 text-sm font-semibold text-slate-200">
+            <span className="rounded-full border border-red-500/40 bg-red-600/15 px-3 py-1 text-red-300">
               ⭐ {rating?.average ? rating.average.toFixed(1) : "N/A"}
             </span>
-            <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-full">
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
               📅 {year}
             </span>
             {language && (
-              <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-full">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
                 🌐 {language}
               </span>
             )}
             {status && (
-              <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-full">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
                 📡 {status}
               </span>
             )}
           </div>
 
           {genres && genres.length > 0 && (
-            <div className="flex gap-2 text-xs font-semibold text-slate-400">
+            <div className="flex flex-wrap gap-2 text-xs font-semibold text-slate-300">
               {genres.map((g) => (
-                <span key={g} className="bg-slate-800 px-2.5 py-1 rounded">
+                <span key={g} className="rounded-full bg-white/5 px-2.5 py-1.5">
                   {g}
                 </span>
               ))}
@@ -79,23 +71,23 @@ export default function MovieModal({ movie, onClose }) {
           )}
 
           <div>
-            <h4 className="text-slate-400 font-bold uppercase text-xs tracking-wider mb-2">
+            <h4 className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
               Overview
             </h4>
             <div
-              className="text-slate-300 leading-relaxed text-sm md:text-base max-h-48 overflow-y-auto pr-2"
+              className="max-h-48 overflow-y-auto pr-2 text-sm leading-7 text-slate-300 md:text-base"
               dangerouslySetInnerHTML={{
                 __html: summary || "<p>No overview available for this title.</p>",
               }}
             />
           </div>
 
-          <div className="pt-4 flex justify-end">
+          <div className="flex justify-end pt-2">
             <button
               onClick={onClose}
-              className="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-600 transition"
+              className="rounded-md border border-white/10 bg-white/5 px-6 py-2.5 font-bold text-white transition hover:bg-red-600"
             >
-              ❌ Close
+              Close
             </button>
           </div>
         </div>

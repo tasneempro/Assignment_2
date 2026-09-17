@@ -5,27 +5,33 @@ export default function MovieCard({ movie, onSelect }) {
   const poster = image?.medium || "https://via.placeholder.com/210x295?text=No+Poster";
 
   return (
-    <div className="bg-slate-800 rounded-xl overflow-hidden border border-slate-700/60 flex flex-col hover:border-indigo-500/50 hover:shadow-xl transition group">
-      <div className="relative overflow-hidden aspect-[2/3] bg-slate-900">
+    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-[#111111] shadow-lg shadow-black/30 transition duration-200 hover:-translate-y-1 hover:border-red-500/60 hover:shadow-red-500/10">
+      <div className="relative overflow-hidden bg-black">
         <img
           src={poster}
           alt={name}
-          className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+          className="aspect-2/3 w-full object-cover transition duration-300 group-hover:scale-105"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+        <div className="absolute left-3 top-3 rounded-full bg-red-600 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+          HD
+        </div>
       </div>
-      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+
+      <div className="flex flex-1 flex-col justify-between p-4">
         <div>
-          <h3 className="text-lg font-bold text-white truncate" title={name}>
+          <h3 className="truncate text-lg font-bold text-white" title={name}>
             {name}
           </h3>
-          <div className="flex justify-between items-center mt-2 text-sm text-slate-400 font-medium">
-            <span>⭐ {rating?.average ? rating.average.toFixed(1) : "N/A"}</span>
-            <span>📅 {year}</span>
+          <div className="mt-2 flex items-center justify-between text-sm text-slate-300">
+            <span className="font-medium text-red-400">⭐ {rating?.average ? rating.average.toFixed(1) : "N/A"}</span>
+            <span>{year}</span>
           </div>
         </div>
+
         <button
           onClick={() => onSelect(movie)}
-          className="w-full py-2.5 bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white rounded-lg font-semibold border border-indigo-500/30 hover:border-indigo-600 transition"
+          className="mt-4 w-full rounded-md bg-white/5 px-3 py-2.5 text-sm font-bold text-white transition hover:bg-red-600"
         >
           See Details
         </button>
