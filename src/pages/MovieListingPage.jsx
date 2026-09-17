@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
 
 export default function MovieListingPage({ onSelectMovie }) {
@@ -7,6 +7,7 @@ export default function MovieListingPage({ onSelectMovie }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch initial shows or search query results
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -19,12 +20,13 @@ export default function MovieListingPage({ onSelectMovie }) {
 
         const res = await fetch(url);
         if (!res.ok) throw new Error("Failed to fetch data.");
-
+        
         const data = await res.json();
-        const formattedData =
-          query.trim() !== ""
-            ? data.map((item) => item.show)
-            : data.slice(0, 24);
+        
+        // TVMaze search endpoint wraps objects in { score, show }
+        const formattedData = query.trim() !== "" 
+          ? data.map((item) => item.show) 
+          : data.slice(0, 24); // Cap initial list to 24 for clean display
 
         setMovies(formattedData);
       } catch (err) {
@@ -34,6 +36,7 @@ export default function MovieListingPage({ onSelectMovie }) {
       }
     };
 
+    // Debounce search requests
     const timer = setTimeout(() => {
       fetchData();
     }, 400);
@@ -43,11 +46,10 @@ export default function MovieListingPage({ onSelectMovie }) {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 min-h-[80vh]">
+      {/* Search Bar Section */}
       <div className="max-w-2xl mx-auto mb-10">
         <div className="relative">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-            🔍
-          </span>
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
           <input
             type="text"
             value={query}
@@ -58,6 +60,7 @@ export default function MovieListingPage({ onSelectMovie }) {
         </div>
       </div>
 
+      {/* Dynamic Content Display */}
       {loading ? (
         <div className="flex justify-center items-center py-20 text-slate-400 font-semibold">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mr-3"></div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import  { useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
@@ -6,7 +6,7 @@ import MovieListingPage from "./pages/MovieListingPage";
 import MovieModal from "./components/MovieModal";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState("home");
+  const [currentPage, setCurrentPage] = useState("home"); // 'home' or 'movies'
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   return (
@@ -17,20 +17,16 @@ export default function App() {
           {currentPage === "home" ? (
             <HomePage onExploreClick={() => setCurrentPage("movies")} />
           ) : (
-            <MovieListingPage
-              onSelectMovie={(movie) => setSelectedMovie(movie)}
-            />
+            <MovieListingPage onSelectMovie={(movie) => setSelectedMovie(movie)} />
           )}
         </main>
       </div>
 
       <Footer />
 
+      {/* Modal Integration */}
       {selectedMovie && (
-        <MovieModal
-          movie={selectedMovie}
-          onClose={() => setSelectedMovie(null)}
-        />
+        <MovieModal movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
       )}
     </div>
   );

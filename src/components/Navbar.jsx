@@ -1,8 +1,9 @@
+
 export default function Navbar({ currentPage, setCurrentPage }) {
   return (
     <nav className="bg-slate-900/90 backdrop-blur-md sticky top-0 z-40 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
-      <div
-        onClick={() => setCurrentPage("home")}
+      <div 
+        onClick={() => setCurrentPage("home")} 
         className="flex items-center gap-2 text-2xl font-extrabold cursor-pointer tracking-wider text-indigo-500"
       >
         <span>🎬</span> MovieExplorer
